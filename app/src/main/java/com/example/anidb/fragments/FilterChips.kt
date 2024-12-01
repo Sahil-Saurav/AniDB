@@ -1,6 +1,5 @@
 package com.example.anidb.fragments
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,16 +21,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.anidb.R
 import com.example.anidb.viewModels.ApiViewModel
+import com.example.anidb.viewModels.HomeViewModel
 
 @Composable
-fun FilterChipsList(viewModel: ApiViewModel){
+fun FilterChipsList(apiViewModel: ApiViewModel){
+    val homeViewModel: HomeViewModel = viewModel()
     val list = listOf(
-        Label("Popular", painterResource(R.drawable.popular_icon),"bypopularity",true),
-        Label("Airing", painterResource(R.drawable.airing_icon),"airing",false),
-        Label("Upcoming", painterResource(R.drawable.upcoming_icon),"upcoming",false),
-        Label("Random", painterResource(R.drawable.random_icon),"",false)
+        Label("Top Rated", painterResource(R.drawable.popular_icon),"bypopularity"),
+        Label("Currently Airing", painterResource(R.drawable.airing_icon),"airing"),
+        Label("Upcoming", painterResource(R.drawable.upcoming_icon),"upcoming"),
+        Label("Random", painterResource(R.drawable.random_icon),"")
     )
     LazyRow(
         modifier = Modifier
@@ -41,7 +43,8 @@ fun FilterChipsList(viewModel: ApiViewModel){
         items(list){
             item-> FilterChips(item.label,item.icon,
             onClick = {
-                viewModel.getTopAnime(item.search)
+                apiViewModel.getTopAnime(item.search)
+                homeViewModel.getLabelDetails(item)
             })
         }
     }
@@ -93,6 +96,5 @@ fun UIPREVIEW(){
 data class Label (
     val label:String,
     val icon : Painter,
-    val search:String,
-    var selected : Boolean
+    val search:String
         )

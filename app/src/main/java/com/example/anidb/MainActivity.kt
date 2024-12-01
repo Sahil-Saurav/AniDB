@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
 import com.example.anidb.pages.HomePage
 import com.example.anidb.ui.theme.AniDBTheme
 import com.example.anidb.viewModels.ApiViewModel
@@ -27,11 +28,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             AniDBTheme(darkTheme = false) {
                 val viewModel = ViewModelProvider.create(this)[ApiViewModel::class.java]
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomePage(viewModel)
+                    Navigation(viewModel,navController)
                 }
             }
         }

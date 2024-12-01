@@ -47,9 +47,11 @@ import com.example.anidb.fragments.Filters
 import com.example.anidb.fragments.Recommendations
 import com.example.anidb.items.RecommendationItems
 import com.example.anidb.viewModels.ApiViewModel
+import com.example.anidb.viewModels.HomeViewModel
 
 @Composable
 fun HomePage(viewModel: ApiViewModel){
+    val homeViewModel:HomeViewModel = viewModel()
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -58,18 +60,24 @@ fun HomePage(viewModel: ApiViewModel){
             mutableStateOf(false)
         }
         val verticalScrollState = rememberScrollState()
+        val filterTitle = homeViewModel.label
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorResource(R.color.pageBack))
-                .statusBarsPadding()
                 .verticalScroll(verticalScrollState)
+                .padding(8.dp)
         ) {
             TopText()
             Recommendations(viewModel = viewModel)
             Spacer(modifier = Modifier.height(8.dp))
             FilterChipsList(viewModel)
             Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text=filterTitle.value,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White)
             Filters(viewModel)
         }
     }
@@ -81,10 +89,7 @@ fun TopText(){
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top =16.dp,
                 bottom = 4.dp,
-                start = 4.dp,
-                end = 4.dp
             )
     ) {
         Text(

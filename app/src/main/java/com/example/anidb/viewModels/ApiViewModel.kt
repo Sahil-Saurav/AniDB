@@ -31,6 +31,7 @@ class ApiViewModel:ViewModel() {
 
     init {
         getRecentAnimeRecommendations()
+        getTopAnime("bypopularity")
     }
 
     fun getAnimeSearch(name:String){
