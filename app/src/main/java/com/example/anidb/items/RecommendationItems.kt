@@ -50,7 +50,7 @@ fun RecommendationItems(data:Entry?,viewModel: ApiViewModel){
             containerColor = colorResource(R.color.card_back),
             contentColor = Color.Unspecified,
             disabledContentColor = Color.Unspecified,
-            disabledContainerColor = Color.Unspecified
+            disabledContainerColor = Color.Gray
         )
     ) {
         Column(
