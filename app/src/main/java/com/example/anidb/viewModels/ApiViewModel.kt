@@ -50,10 +50,18 @@ class ApiViewModel:ViewModel() {
         _animeDetailsById.value = NetworkResponse.Loading
         viewModelScope.launch {
             val response = api.getAnimeById(id)
-            if(response.isSuccessful){
-                Log.i("byID",response.body().toString())
-            }else{
-                Log.i("Error",response.message())
+            try {
+                if(response.isSuccessful){
+                    Log.i("search",response.body().toString())
+                    response.body()?.let {
+                        _animeDetailsById.value = NetworkResponse.Success(it)
+                    }
+                }else{
+                    Log.i("Error",response.message())
+                    _animeDetailsById.value = NetworkResponse.Error("Something Went Wrong")
+                }
+            }catch (e:HttpException){
+                _animeDetailsById.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
@@ -19,14 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.anidb.R
+import com.example.anidb.Utils.Loading
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.items.RecommendationItems
 import com.example.anidb.viewModels.ApiViewModel
 
 @Composable
-fun Recommendations(viewModel: ApiViewModel){
+fun Recommendations(viewModel: ApiViewModel,navController: NavHostController){
     val animeRecommendations = viewModel.animeRecommendations.observeAsState()
     Column(
         modifier= Modifier
@@ -41,9 +46,7 @@ fun Recommendations(viewModel: ApiViewModel){
             }
 
             NetworkResponse.Loading ->{
-                CircularProgressIndicator(
-                    color = colorResource(R.color.orange)
-                )
+                Loading(text = "Getting Recommendations")
             }
             is NetworkResponse.Success ->{
 
@@ -56,7 +59,7 @@ fun Recommendations(viewModel: ApiViewModel){
                     result.data.data?.forEach {
                         items(it?.entry?:emptyList()){
                                 item ->
-                            RecommendationItems(item,viewModel)
+                            RecommendationItems(item,viewModel,navController)
                         }
                     }
                 }

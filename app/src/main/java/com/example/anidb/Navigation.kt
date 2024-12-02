@@ -41,13 +41,18 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.anidb.pages.DetailsPage
 import com.example.anidb.pages.HomePage
 import com.example.anidb.viewModels.ApiViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Navigation(viewModel: ApiViewModel,navController: NavController){
+fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -63,11 +68,12 @@ fun Navigation(viewModel: ApiViewModel,navController: NavController){
                         },
                 colors = TopAppBarColors(
                     containerColor = colorResource(R.color.primary_blue),
-                    scrolledContainerColor = Color.Unspecified,
+                    scrolledContainerColor = colorResource(R.color.primary_blue),
                     navigationIconContentColor = colorResource(R.color.pageBack),
                     titleContentColor = colorResource(R.color.pageBack),
                     actionIconContentColor = colorResource(R.color.pageBack)
                 ),
+                scrollBehavior = scrollBehavior,
             )
         },
         bottomBar = {
@@ -117,8 +123,17 @@ fun Navigation(viewModel: ApiViewModel,navController: NavController){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
-            HomePage(viewModel)
+            NavHost(navController = navController, startDestination = Screens.HomeScreen.route){
+                composable(route = Screens.HomeScreen.route) {
+                    HomePage(viewModel,navController)
+                }
+                composable(route = Screens.DetailsScreen.route) {
+                    DetailsPage(viewModel,navController)
+                }
+            }
+
         }
     }
 }

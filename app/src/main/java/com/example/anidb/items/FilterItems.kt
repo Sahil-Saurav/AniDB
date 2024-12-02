@@ -22,17 +22,23 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.anidb.R
+import com.example.anidb.Screens
 import com.example.anidb.api.topAnime.Data
 import com.example.anidb.viewModels.ApiViewModel
 
 @Composable
-fun FilterItems(data:Data?,viewModel: ApiViewModel){
+fun FilterItems(data:Data?,viewModel: ApiViewModel,navController: NavHostController){
     Card(
         modifier = Modifier
             .padding(4.dp)
-            .clickable { viewModel.getAnimeFullById(data?.mal_id) }
+            .clickable {
+                viewModel.getAnimeFullById(data?.mal_id)
+                navController.navigate(Screens.DetailsScreen.route)
+            }
             .border(width = 2.dp,
                 color = colorResource(R.color.primary_blue),
                 shape = RoundedCornerShape(13.dp)

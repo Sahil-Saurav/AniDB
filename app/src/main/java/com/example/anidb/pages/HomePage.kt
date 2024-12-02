@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.fragments.FilterChipsList
@@ -50,7 +52,7 @@ import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.HomeViewModel
 
 @Composable
-fun HomePage(viewModel: ApiViewModel){
+fun HomePage(viewModel: ApiViewModel,navController: NavHostController){
     val homeViewModel:HomeViewModel = viewModel()
     Surface(
         modifier = Modifier
@@ -69,7 +71,7 @@ fun HomePage(viewModel: ApiViewModel){
                 .padding(8.dp)
         ) {
             TopText()
-            Recommendations(viewModel = viewModel)
+            Recommendations(viewModel = viewModel,navController=navController)
             Spacer(modifier = Modifier.height(8.dp))
             FilterChipsList(viewModel)
             Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +80,7 @@ fun HomePage(viewModel: ApiViewModel){
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White)
-            Filters(viewModel)
+            Filters(viewModel, navController = navController)
         }
     }
 }

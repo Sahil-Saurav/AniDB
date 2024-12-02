@@ -19,13 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.anidb.R
+import com.example.anidb.Utils.Loading
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.items.FilterItems
 import com.example.anidb.viewModels.ApiViewModel
 
 @Composable
-fun Filters(viewModel: ApiViewModel){
+fun Filters(viewModel: ApiViewModel,navController: NavHostController){
     val topAnime = viewModel.animeTop.observeAsState()
     Column(
         modifier= Modifier
@@ -36,9 +38,7 @@ fun Filters(viewModel: ApiViewModel){
     ) {
         when(val result = topAnime.value){
             is NetworkResponse.Loading ->{
-               CircularProgressIndicator(
-                   color = colorResource(R.color.orange)
-               )
+               Loading("Sit tightly getting content")
             }
             is NetworkResponse.Error ->{
                 Text(result.message?:"An unexpected Error occurred")
@@ -53,7 +53,7 @@ fun Filters(viewModel: ApiViewModel){
                     result.data.data.let {
                         items(it?:emptyList()){
                             item->
-                            FilterItems(item,viewModel)
+                            FilterItems(item,viewModel,navController)
                         }
                     }
                     }

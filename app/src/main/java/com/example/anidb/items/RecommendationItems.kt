@@ -34,18 +34,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.anidb.R
+import com.example.anidb.Screens
 import com.example.anidb.api.recomendationAnime.Entry
 import com.example.anidb.viewModels.ApiViewModel
 
 
 @Composable
-fun RecommendationItems(data:Entry?,viewModel: ApiViewModel){
+fun RecommendationItems(data:Entry?,viewModel: ApiViewModel,navController: NavHostController){
     Card(
         modifier = Modifier
             .padding(4.dp)
-            .clickable { viewModel.getAnimeFullById(data?.mal_id) },
+            .clickable {
+                viewModel.getAnimeFullById(data?.mal_id)
+                navController.navigate(Screens.DetailsScreen.route)
+                       },
         colors = CardColors(
             containerColor = colorResource(R.color.card_back),
             contentColor = Color.Unspecified,
