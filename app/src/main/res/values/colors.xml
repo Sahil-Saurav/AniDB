@@ -11,4 +11,5 @@
     <color name="card_back">#4A4A4A</color>
     <color name="orange">#FF8700</color>
     <color name="primary_blue">#0296E5</color>
+    <color name="text_gray">#92929D</color>
 </resources>

@@ -9,10 +9,16 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ChipColors
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,54 +36,66 @@ import com.example.anidb.viewModels.HomeViewModel
 @Composable
 fun FilterChipsList(apiViewModel: ApiViewModel){
     val homeViewModel: HomeViewModel = viewModel()
+    var selectedIdx by remember {
+        mutableStateOf(1)
+    }
     val list = listOf(
-        Label("Top Rated", painterResource(R.drawable.popular_icon),"bypopularity"),
-        Label("Currently Airing", painterResource(R.drawable.airing_icon),"airing"),
-        Label("Upcoming", painterResource(R.drawable.upcoming_icon),"upcoming"),
-        Label("Random", painterResource(R.drawable.random_icon),"")
+        Label(1,"Top Rated", painterResource(R.drawable.popular_icon),"bypopularity",),
+        Label(2,"Currently Airing", painterResource(R.drawable.airing_icon),"airing",),
+        Label(3,"Upcoming", painterResource(R.drawable.upcoming_icon),"upcoming",),
+        Label(4,"Random", painterResource(R.drawable.random_icon),"",)
     )
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        items(list){
-            item-> FilterChips(item.label,item.icon,
+        items(
+            items = list, key = {list -> list.idx}
+        ){
+            list-> FilterChips(list.label,list.icon, selected = selectedIdx==list.idx,
             onClick = {
-                apiViewModel.getTopAnime(item.search)
-                homeViewModel.getLabelDetails(item)
-            })
+                apiViewModel.getTopAnime(list.search)
+                homeViewModel.getLabelDetails(list)
+                selectedIdx = list.idx
+            }
+            )
         }
     }
 }
 
 @Composable
-fun FilterChips(label: String,icon: Painter,onClick:()->Unit){
-    SuggestionChip(
+fun FilterChips(label: String,icon: Painter,selected:Boolean,onClick:()->Unit){
+
+    FilterChip(
+        selected = selected,
         onClick = {onClick()},
         label = { Text(label) },
-        icon = {
+        leadingIcon = {
             Icon(
             painter = icon,
             contentDescription = label,
-            tint = colorResource(R.color.orange),
             modifier = Modifier
                 .size(24.dp)
         )
                },
-        colors = ChipColors(
+        colors = FilterChipDefaults.filterChipColors(
             containerColor = colorResource(R.color.card_back),
-            labelColor = colorResource(R.color.orange),
-            leadingIconContentColor = Color.Unspecified,
-            trailingIconContentColor = Color.Unspecified,
+            labelColor = colorResource(R.color.primary_blue),
+            iconColor = colorResource(R.color.primary_blue),
             disabledContainerColor = Color.Unspecified,
             disabledLabelColor = Color.Unspecified,
-            disabledLeadingIconContentColor = Color.Unspecified,
-            disabledTrailingIconContentColor = Color.Unspecified
+            disabledLeadingIconColor = colorResource(R.color.primary_blue),
+            disabledTrailingIconColor = colorResource(R.color.primary_blue),
+            selectedContainerColor = colorResource(R.color.card_back),
+            disabledSelectedContainerColor = colorResource(R.color.card_back),
+            selectedLabelColor = colorResource(R.color.orange),
+            selectedLeadingIconColor = colorResource(R.color.orange),
+            selectedTrailingIconColor = colorResource(R.color.orange)
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = colorResource(R.color.orange)
+            color = if(selected) colorResource(R.color.orange) else colorResource(R.color.primary_blue)
         ),
         shape = RoundedCornerShape(64),
         modifier = Modifier
@@ -91,11 +109,12 @@ fun FilterChips(label: String,icon: Painter,onClick:()->Unit){
 @Composable
 @Preview(showBackground = true)
 fun UIPREVIEW(){
-    FilterChips("Popular", painterResource(R.drawable.popular_icon),{})
+    FilterChips("Popular", painterResource(R.drawable.popular_icon),true,{})
 }
 
 data class Label (
+    val idx:Int,
     val label:String,
     val icon : Painter,
-    val search:String
+    val search:String,
         )

@@ -9,6 +9,8 @@ import coil.network.HttpException
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.RetroFitInstance
 import com.example.anidb.api.animeById.AnimeById
+import com.example.anidb.api.animeCharacter.AnimeCharacter
+import com.example.anidb.api.animeReview.AnimeReview
 import com.example.anidb.api.animeSearch.AnimeDetailsbySearch
 import com.example.anidb.api.recomendationAnime.Recommendations
 import com.example.anidb.api.topAnime.TopAnime
@@ -28,6 +30,12 @@ class ApiViewModel:ViewModel() {
 
     private val _animeTop = MutableLiveData<NetworkResponse<TopAnime>>()
     val animeTop : LiveData<NetworkResponse<TopAnime>> = _animeTop
+
+    private val _animeReview = MutableLiveData<NetworkResponse<AnimeReview>>()
+    val animeReview:LiveData<NetworkResponse<AnimeReview>> = _animeReview
+
+    private val _animeCharacter= MutableLiveData<NetworkResponse<AnimeCharacter>>()
+    val animeCharacter:LiveData<NetworkResponse<AnimeCharacter>> = _animeCharacter
 
     init {
         getRecentAnimeRecommendations()
@@ -98,6 +106,30 @@ class ApiViewModel:ViewModel() {
                 }
             }catch (e:HttpException){
                 _animeTop.value = NetworkResponse.Error(e.message.toString())
+            }
+        }
+    }
+
+    fun getAnimeReview(id:Int?){
+        _animeReview.value = NetworkResponse.Loading
+        viewModelScope.launch {
+            val response = api.getAnimeReview(id)
+            if(response.isSuccessful){
+                Log.i("review",response.body().toString())
+            }else{
+                Log.i("error",response.message())
+            }
+        }
+    }
+
+    fun getAnimeCharacters(id:Int?){
+        _animeCharacter.value = NetworkResponse.Loading
+        viewModelScope.launch {
+            val response = api.getAnimeCharacter(id)
+            if (response.isSuccessful){
+                Log.i("Characters",response.body().toString())
+            }else{
+                Log.i("Error",response.message())
             }
         }
     }

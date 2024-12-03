@@ -15,10 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -37,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -46,13 +51,23 @@ import com.example.anidb.Utils.Topbar
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.animeById.AnimeById
 import com.example.anidb.api.animeById.Data
+import com.example.anidb.fragments.Details_Bottom
+import com.example.anidb.fragments.Details_Middle
 import com.example.anidb.fragments.Details_top
+import com.example.anidb.items.About
 import com.example.anidb.items.RecommendationItems
 import com.example.anidb.viewModels.ApiViewModel
+import com.example.anidb.viewModels.DetailsViewModel
+import com.example.anidb.viewModels.HomeViewModel
 
 @Composable
 fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
     val animeDetailsById = viewModel.animeDetailsById.observeAsState()
+    val animeReview = viewModel.animeReview.observeAsState()
+    val animeCharacter = viewModel.animeCharacter.observeAsState()
+
+    val detailsViewModel : DetailsViewModel = viewModel()
+
     Surface(modifier = Modifier
         .fillMaxSize()
     ) {
@@ -86,9 +101,27 @@ fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
                 }
                 is NetworkResponse.Success ->{
                     Details_top(result.data)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LazyRow {
+                        item{
+                            Details_Middle(result.data.data)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Details_Bottom(detailsViewModel)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    when(detailsViewModel.toDo.value){
+                        "About" ->{
+                            LazyColumn {
+                                item {
+                                    About(result.data.data)
+                                }
+                            }
+                        }
+                    }
                 }
                 null -> {
-                    Text("No Recommendations Available")
+                    Text("No Details Available")
                 }
             }
         }

@@ -1,6 +1,8 @@
 package com.example.anidb.api
 
 import com.example.anidb.api.animeById.AnimeById
+import com.example.anidb.api.animeCharacter.AnimeCharacter
+import com.example.anidb.api.animeReview.AnimeReview
 import com.example.anidb.api.animeSearch.AnimeDetailsbySearch
 import com.example.anidb.api.recomendationAnime.Recommendations
 import com.example.anidb.api.topAnime.TopAnime
@@ -28,4 +30,14 @@ interface JikanAPI {
     suspend fun getPopularAnime(
         @Query("filter") filter:String
     ):Response<TopAnime>
+
+    @GET("anime/{id}/reviews")
+    suspend fun getAnimeReview(
+        @Path("id") id:Int?
+    ):Response<AnimeReview>
+
+    @GET("anime/{id}/characters")
+    suspend fun getAnimeCharacter(
+        @Path("id") id:Int?
+    ):Response<AnimeCharacter>
 }
