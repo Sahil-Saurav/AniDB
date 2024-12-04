@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -58,9 +59,7 @@ fun HomePage(viewModel: ApiViewModel,navController: NavHostController){
         modifier = Modifier
             .fillMaxSize()
     ) {
-        val selected by remember {
-            mutableStateOf(false)
-        }
+
         val verticalScrollState = rememberScrollState()
         val filterTitle = homeViewModel.label
         Column(

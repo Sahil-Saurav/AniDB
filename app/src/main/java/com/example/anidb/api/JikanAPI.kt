@@ -31,7 +31,7 @@ interface JikanAPI {
         @Query("filter") filter:String
     ):Response<TopAnime>
 
-    @GET("anime/{id}/reviews")
+    @GET("anime/{id}/reviews?preliminary=true")
     suspend fun getAnimeReview(
         @Path("id") id:Int?
     ):Response<AnimeReview>

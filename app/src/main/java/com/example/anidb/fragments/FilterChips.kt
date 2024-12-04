@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ChipColors
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,17 +26,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.HomeViewModel
 
 @Composable
 fun FilterChipsList(apiViewModel: ApiViewModel){
+
     val homeViewModel: HomeViewModel = viewModel()
-    var selectedIdx by remember {
-        mutableStateOf(1)
-    }
+
     val list = listOf(
         Label(1,"Top Rated", painterResource(R.drawable.popular_icon),"bypopularity",),
         Label(2,"Currently Airing", painterResource(R.drawable.airing_icon),"airing",),
@@ -53,11 +49,11 @@ fun FilterChipsList(apiViewModel: ApiViewModel){
         items(
             items = list, key = {list -> list.idx}
         ){
-            list-> FilterChips(list.label,list.icon, selected = selectedIdx==list.idx,
+            list-> FilterChips(list.label,list.icon, selected = homeViewModel.idx.value==list.idx,
             onClick = {
                 apiViewModel.getTopAnime(list.search)
-                homeViewModel.getLabelDetails(list)
-                selectedIdx = list.idx
+                homeViewModel.setLabelDetails(list)
+                homeViewModel.setIndex(list.idx)
             }
             )
         }

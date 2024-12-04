@@ -51,11 +51,14 @@ import com.example.anidb.Utils.Topbar
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.animeById.AnimeById
 import com.example.anidb.api.animeById.Data
+import com.example.anidb.fragments.CharacterList
 import com.example.anidb.fragments.Details_Bottom
 import com.example.anidb.fragments.Details_Middle
 import com.example.anidb.fragments.Details_top
+import com.example.anidb.fragments.ReviewList
 import com.example.anidb.items.About
 import com.example.anidb.items.RecommendationItems
+import com.example.anidb.items.ReviewItems
 import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.DetailsViewModel
 import com.example.anidb.viewModels.HomeViewModel
@@ -63,11 +66,8 @@ import com.example.anidb.viewModels.HomeViewModel
 @Composable
 fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
     val animeDetailsById = viewModel.animeDetailsById.observeAsState()
-    val animeReview = viewModel.animeReview.observeAsState()
-    val animeCharacter = viewModel.animeCharacter.observeAsState()
 
     val detailsViewModel : DetailsViewModel = viewModel()
-
     Surface(modifier = Modifier
         .fillMaxSize()
     ) {
@@ -85,7 +85,6 @@ fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
                 is NetworkResponse.Error ->{
                     Text(result.message?:"An unexpected Error Occurred")
                 }
-
                 is NetworkResponse.Loading ->{
                     Column(
                         verticalArrangement = Arrangement.Center,
@@ -117,6 +116,14 @@ fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
                                     About(result.data.data)
                                 }
                             }
+                        }
+                        "Review" ->{
+                            viewModel.getAnimeReview(result.data.data?.mal_id)
+                            ReviewList(viewModel)
+                        }
+                        "Characters" ->{
+                            viewModel.getAnimeCharacters(result.data.data?.mal_id)
+                            CharacterList(viewModel)
                         }
                     }
                 }

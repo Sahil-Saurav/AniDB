@@ -1,5 +1,6 @@
 package com.example.anidb
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,29 +53,27 @@ import com.example.anidb.viewModels.ApiViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                    text="AniDB",
-                    color = Color.White,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 32.sp,
-                )
-                        },
-                colors = TopAppBarColors(
-                    containerColor = colorResource(R.color.primary_blue),
-                    scrolledContainerColor = colorResource(R.color.primary_blue),
-                    navigationIconContentColor = colorResource(R.color.pageBack),
-                    titleContentColor = colorResource(R.color.pageBack),
-                    actionIconContentColor = colorResource(R.color.pageBack)
-                ),
-                scrollBehavior = scrollBehavior,
-            )
+//            TopAppBar(
+//                title = {
+//                    Text(
+//                    text="AniDB",
+//                    color = Color.White,
+//                    fontWeight = FontWeight.ExtraBold,
+//                    fontSize = 32.sp,
+//                )
+//                        },
+//                colors = TopAppBarColors(
+//                    containerColor = colorResource(R.color.primary_blue),
+//                    scrolledContainerColor = colorResource(R.color.primary_blue),
+//                    navigationIconContentColor = colorResource(R.color.pageBack),
+//                    titleContentColor = colorResource(R.color.pageBack),
+//                    actionIconContentColor = colorResource(R.color.pageBack)
+//                )
+//            )
         },
         bottomBar = {
             BottomAppBar(
@@ -123,7 +122,6 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             NavHost(navController = navController, startDestination = Screens.HomeScreen.route){
                 composable(route = Screens.HomeScreen.route) {

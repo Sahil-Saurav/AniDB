@@ -114,10 +114,16 @@ class ApiViewModel:ViewModel() {
         _animeReview.value = NetworkResponse.Loading
         viewModelScope.launch {
             val response = api.getAnimeReview(id)
-            if(response.isSuccessful){
-                Log.i("review",response.body().toString())
-            }else{
-                Log.i("error",response.message())
+            try {
+                if (response.isSuccessful){
+                    response.body()?.let {
+                       _animeReview.value = NetworkResponse.Success(it) 
+                    }
+                }else{
+                   _animeReview.value = NetworkResponse.Error("Error Occurred")
+                }
+            }catch (e:HttpException){
+                _animeReview.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }
@@ -126,10 +132,18 @@ class ApiViewModel:ViewModel() {
         _animeCharacter.value = NetworkResponse.Loading
         viewModelScope.launch {
             val response = api.getAnimeCharacter(id)
-            if (response.isSuccessful){
-                Log.i("Characters",response.body().toString())
-            }else{
-                Log.i("Error",response.message())
+            try {
+                if (response.isSuccessful){
+                    response.body()?.let {
+                        _animeCharacter.value = NetworkResponse.Success(it)
+                    }
+                    Log.i("Characters",response.body().toString())
+                }else{
+                    _animeCharacter.value = NetworkResponse.Error("Error occurred")
+                    Log.i("Error",response.message())
+                }
+            }catch (e:HttpException){
+                _animeCharacter.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }

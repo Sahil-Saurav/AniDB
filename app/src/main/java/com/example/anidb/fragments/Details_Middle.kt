@@ -83,9 +83,12 @@ fun Details_Middle(data:Data?){
                     .size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            val genre = data?.genres?.firstOrNull()?.name?:"null"
+            val genre = data?.genres?.joinToString(",") {
+                it?.name?:"Unknown"
+            }?:"null"
+            val genres = data?.genres?.map { it?.name }
             Text(
-                text =genre,
+                text = genre,
                 color = colorResource(R.color.text_gray),
                 maxLines = 1
             )

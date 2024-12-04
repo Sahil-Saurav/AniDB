@@ -75,7 +75,7 @@ fun Recommendations(viewModel: ApiViewModel,navController: NavHostController){
                         RecommendationItems(item, viewModel, navController)
                     }
                     item {
-                        if(limit <=recoItem.size){
+                        if(limit<=recoItem.size){
                             Button(
                                 onClick = {limit+=10},
                                 colors = ButtonDefaults.buttonColors(
