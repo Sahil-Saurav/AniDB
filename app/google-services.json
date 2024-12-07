@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439002154519",
+    "project_id": "animeapp-214d0",
+    "storage_bucket": "animeapp-214d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439002154519:android:40bdaa894e39d33f72be52",
+        "android_client_info": {
+          "package_name": "com.example.anidb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYWEnOzxyMX_JLXJ2c7BgbCdsQKUkrC38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

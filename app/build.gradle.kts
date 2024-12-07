@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -51,6 +52,7 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.auth)
     val retroFitVer = "2.11.0"
     val nav_version = "2.8.4"
     implementation ("com.squareup.retrofit2:retrofit:${retroFitVer}")

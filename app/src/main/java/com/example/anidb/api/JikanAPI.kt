@@ -1,5 +1,6 @@
 package com.example.anidb.api
 
+import androidx.navigation.NavType
 import com.example.anidb.api.animeById.AnimeById
 import com.example.anidb.api.animeCharacter.AnimeCharacter
 import com.example.anidb.api.animeReview.AnimeReview
@@ -15,7 +16,8 @@ interface JikanAPI {
 
     @GET("anime")
     suspend fun getAnimeSearch(
-        @Query("q") name:String
+        @Query("q") name:String,
+        @Query("type") type1:String
     ):Response<AnimeDetailsbySearch>
 
     @GET("recommendations/anime")

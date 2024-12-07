@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.example.anidb.pages.HomePage
+import com.example.anidb.pages.LoginPage
 import com.example.anidb.ui.theme.AniDBTheme
 import com.example.anidb.viewModels.ApiViewModel
 

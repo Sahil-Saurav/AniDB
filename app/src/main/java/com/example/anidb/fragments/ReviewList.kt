@@ -43,7 +43,7 @@ fun ReviewList(viewModel: ApiViewModel){
                     item->  ReviewItems(item)
                 }
                 item {
-                    if(limit<=list.size && list.isNotEmpty()){
+                    if(list.size>=limit && list.isNotEmpty()){
                         Spacer(modifier = Modifier.height(24.dp))
                         Text(
                             text = "Load More",

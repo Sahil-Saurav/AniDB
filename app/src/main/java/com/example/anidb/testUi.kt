@@ -49,7 +49,7 @@ fun testApi(viewModel:ApiViewModel){
                 end.linkTo(parent.end)
             })
         Button(
-            onClick = {viewModel.getAnimeSearch(anime)},
+            onClick = {viewModel.getAnimeSearch(anime,"tv")},
             Modifier.constrainAs(button){
                 top.linkTo(field.bottom, margin = 8.dp)
                 start.linkTo(parent.start)

@@ -15,6 +15,7 @@ import com.example.anidb.api.animeSearch.AnimeDetailsbySearch
 import com.example.anidb.api.recomendationAnime.Recommendations
 import com.example.anidb.api.topAnime.TopAnime
 import kotlinx.coroutines.launch
+import okio.IOException
 
 class ApiViewModel:ViewModel() {
     private val api = RetroFitInstance.api
@@ -42,14 +43,23 @@ class ApiViewModel:ViewModel() {
         getTopAnime("bypopularity")
     }
 
-    fun getAnimeSearch(name:String){
-        //_animeDetailsBySearch.value = NetworkResponse.Loading
+    fun getAnimeSearch(name:String,type:String){
+        _animeDetailsBySearch.value = NetworkResponse.Loading
         viewModelScope.launch {
-            val response = api.getAnimeSearch(name)
-            if (response.isSuccessful){
-                Log.i("search",response.body().toString())
-            }else{
-                Log.i("Error",response.message())
+            val response = api.getAnimeSearch(name,type)
+            try {
+                if (response.isSuccessful){
+                    response.body()?.let {
+                        _animeDetailsBySearch.value = NetworkResponse.Success(it)
+                    }
+                    Log.i("searchByname",response.body().toString())
+                }else{
+                    Log.i("Error",response.message())
+                }
+            }catch (e:HttpException){
+                _animeDetailsBySearch.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
+                _animeDetailsBySearch.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }
@@ -70,6 +80,8 @@ class ApiViewModel:ViewModel() {
                 }
             }catch (e:HttpException){
                 _animeDetailsById.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
+                _animeDetailsById.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }
@@ -88,6 +100,8 @@ class ApiViewModel:ViewModel() {
                 }
             }catch (e:HttpException){
                 _animeRecommendations.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
+            _animeRecommendations.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }
@@ -106,6 +120,8 @@ class ApiViewModel:ViewModel() {
                 }
             }catch (e:HttpException){
                 _animeTop.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
+            _animeTop.value = NetworkResponse.Error(e.message.toString())
             }
         }
     }
@@ -123,6 +139,8 @@ class ApiViewModel:ViewModel() {
                    _animeReview.value = NetworkResponse.Error("Error Occurred")
                 }
             }catch (e:HttpException){
+                _animeReview.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
                 _animeReview.value = NetworkResponse.Error(e.message.toString())
             }
         }
@@ -143,6 +161,8 @@ class ApiViewModel:ViewModel() {
                     Log.i("Error",response.message())
                 }
             }catch (e:HttpException){
+                _animeCharacter.value = NetworkResponse.Error(e.message.toString())
+            }catch (e:IOException){
                 _animeCharacter.value = NetworkResponse.Error(e.message.toString())
             }
         }

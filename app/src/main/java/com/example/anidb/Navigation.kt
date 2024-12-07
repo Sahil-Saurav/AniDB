@@ -41,94 +41,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.anidb.pages.AccountPage
 import com.example.anidb.pages.DetailsPage
 import com.example.anidb.pages.HomePage
+import com.example.anidb.pages.LoginPage
+import com.example.anidb.pages.SearchPage
+import com.example.anidb.pages.SignUpPage
 import com.example.anidb.viewModels.ApiViewModel
+import com.example.anidb.viewModels.AuthViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
+    val authViewModel = viewModel<AuthViewModel>()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        topBar = {
-//            TopAppBar(
-//                title = {
-//                    Text(
-//                    text="AniDB",
-//                    color = Color.White,
-//                    fontWeight = FontWeight.ExtraBold,
-//                    fontSize = 32.sp,
-//                )
-//                        },
-//                colors = TopAppBarColors(
-//                    containerColor = colorResource(R.color.primary_blue),
-//                    scrolledContainerColor = colorResource(R.color.primary_blue),
-//                    navigationIconContentColor = colorResource(R.color.pageBack),
-//                    titleContentColor = colorResource(R.color.pageBack),
-//                    actionIconContentColor = colorResource(R.color.pageBack)
-//                )
-//            )
-        },
-        bottomBar = {
-            BottomAppBar(
-                contentColor = colorResource(R.color.primary_blue),
-                containerColor = colorResource(R.color.pageBack),
-                modifier = Modifier.height(80.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .clickable {  }
-                    ) {
-                        Icon(imageVector = Icons.Filled.Home, contentDescription = "home")
-                        Text("Home")
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .clickable {  }
-                    ) {
-                        Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
-                        Text("Search")
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .clickable {  }
-                    ) {
-                        Icon(imageVector = Icons.Filled.AccountBox, contentDescription = "account")
-                        Text("Account")
-                    }
-                }
-            }
-        }
     ) { innerPadding->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(colorResource(R.color.pageBack))
                 .padding(innerPadding)
         ) {
-            NavHost(navController = navController, startDestination = Screens.HomeScreen.route){
+            NavHost(navController = navController, startDestination = Screens.LoginScreen.route){
                 composable(route = Screens.HomeScreen.route) {
                     HomePage(viewModel,navController)
                 }
                 composable(route = Screens.DetailsScreen.route) {
                     DetailsPage(viewModel,navController)
+                }
+                composable(route = Screens.SearchScreen.route) {
+                    SearchPage(viewModel,navController)
+                }
+                composable(route = Screens.AccountScreen.route) {
+                    AccountPage(authViewModel,navController)
+                }
+                composable(route = Screens.LoginScreen.route) {
+                    LoginPage(authViewModel,navController)
+                }
+                composable(route = Screens.SignUpScreen.route) {
+                    SignUpPage(authViewModel,navController)
                 }
             }
 
