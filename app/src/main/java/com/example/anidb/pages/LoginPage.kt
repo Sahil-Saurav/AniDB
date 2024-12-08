@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Surface
@@ -32,11 +35,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +64,8 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
     }
     val context = LocalContext.current
     val authState = authViewModel.authstate.observeAsState()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> {
@@ -115,6 +125,14 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
                 TextField(
                     value = email,
                     onValueChange = {email=it},
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
                     modifier = Modifier
                         .clip(RoundedCornerShape(32.dp))
                 )
@@ -129,6 +147,15 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
                 TextField(
                     value = pass,
                     onValueChange = {pass=it},
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            keyboardController?.hide()
+                        }
+                    ),
                     modifier = Modifier
                         .clip(RoundedCornerShape(32.dp))
                 )
@@ -137,6 +164,12 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
                     onClick = {
                         authViewModel.signIn(email,pass)
                     },
+                    colors = ButtonColors(
+                        containerColor = colorResource(R.color.primary_blue),
+                        contentColor = Color.Unspecified,
+                        disabledContainerColor = Color.Gray,
+                        disabledContentColor = Color.White
+                    ),
                     modifier = Modifier
                         .width(280.dp),
                     enabled = authState.value != AuthState.Loading

@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
@@ -45,6 +46,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.anidb.R
+import com.example.anidb.Utils.Connection_Failure_Toast
+import com.example.anidb.Utils.Connectivity_Manager
 import com.example.anidb.Utils.Topbar
 import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.SearchViewModel
@@ -54,6 +57,7 @@ fun Search_Top(viewModel:ApiViewModel,navController: NavHostController){
     val searchViewModel = viewModel<SearchViewModel>()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +74,11 @@ fun Search_Top(viewModel:ApiViewModel,navController: NavHostController){
             keyboardActions = KeyboardActions(
                 onSearch = {
                     Log.i("searchclick",searchViewModel.getSearch())
-                    viewModel.getAnimeSearch(searchViewModel.getSearch(),searchViewModel.getType())
+                    if(Connectivity_Manager(context)){
+                        viewModel.getAnimeSearch(searchViewModel.getSearch(),searchViewModel.getType())
+                    }else{
+                        Connection_Failure_Toast(context)
+                    }
                     keyboardController?.hide()
                     focusManager.clearFocus()
                 }

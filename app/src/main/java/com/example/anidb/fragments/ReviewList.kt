@@ -19,7 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.anidb.Utils.Loading
+import com.example.anidb.Utils.Show_Full_Review
 import com.example.anidb.api.NetworkResponse
+import com.example.anidb.api.animeReview.Data
 import com.example.anidb.items.ReviewItems
 import com.example.anidb.viewModels.ApiViewModel
 
@@ -28,6 +30,12 @@ fun ReviewList(viewModel: ApiViewModel){
     val animeReview = viewModel.animeReview.observeAsState()
     var limit by remember {
         mutableStateOf(10)
+    }
+    var showFullReview by remember {
+        mutableStateOf(false)
+    }
+    var reviewToShow:Data? by remember {
+        mutableStateOf(null)
     }
     when(val result = animeReview.value){
         is NetworkResponse.Loading->{
@@ -40,7 +48,10 @@ fun ReviewList(viewModel: ApiViewModel){
             val list = result.data.data?.take(limit)?:emptyList()
             LazyColumn {
                 items(list){
-                    item->  ReviewItems(item)
+                    item->  ReviewItems(item, onClick = {
+                        showFullReview=true
+                        reviewToShow=item
+                    })
                 }
                 item {
                     if(list.size>=limit && list.isNotEmpty()){
@@ -59,6 +70,10 @@ fun ReviewList(viewModel: ApiViewModel){
                         Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
+            }
+            if(showFullReview){
+                Show_Full_Review(
+                    data = reviewToShow, onDismiss = {showFullReview=false})
             }
         }
         null ->{

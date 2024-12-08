@@ -7,4 +7,5 @@ sealed class Screens(val route:String){
     object LoginScreen:Screens("login_screen")
     object SignUpScreen:Screens("signup_screen")
     object AccountScreen:Screens("account_screen")
+    object WelcomePage:Screens("welcome_screen")
 }

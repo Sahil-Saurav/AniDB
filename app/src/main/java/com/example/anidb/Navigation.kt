@@ -53,6 +53,7 @@ import com.example.anidb.pages.HomePage
 import com.example.anidb.pages.LoginPage
 import com.example.anidb.pages.SearchPage
 import com.example.anidb.pages.SignUpPage
+import com.example.anidb.pages.WelcomePage
 import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.AuthViewModel
 
@@ -69,7 +70,7 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
                 .background(colorResource(R.color.pageBack))
                 .padding(innerPadding)
         ) {
-            NavHost(navController = navController, startDestination = Screens.LoginScreen.route){
+            NavHost(navController = navController, startDestination = Screens.WelcomePage.route){
                 composable(route = Screens.HomeScreen.route) {
                     HomePage(viewModel,navController)
                 }
@@ -87,6 +88,9 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
                 }
                 composable(route = Screens.SignUpScreen.route) {
                     SignUpPage(authViewModel,navController)
+                }
+                composable(route = Screens.WelcomePage.route) {
+                    WelcomePage(authViewModel,navController)
                 }
             }
 

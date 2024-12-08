@@ -1,11 +1,15 @@
 package com.example.anidb.viewModels
 
+import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
+import com.example.anidb.Utils.Connection_Failure_Toast
+import com.example.anidb.Utils.Connectivity_Manager
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.RetroFitInstance
 import com.example.anidb.api.animeById.AnimeById
@@ -17,7 +21,7 @@ import com.example.anidb.api.topAnime.TopAnime
 import kotlinx.coroutines.launch
 import okio.IOException
 
-class ApiViewModel:ViewModel() {
+class ApiViewModel():ViewModel() {
     private val api = RetroFitInstance.api
 
     private val _animeDetailsBySearch = MutableLiveData<NetworkResponse<AnimeDetailsbySearch>>()
@@ -54,6 +58,7 @@ class ApiViewModel:ViewModel() {
                     }
                     Log.i("searchByname",response.body().toString())
                 }else{
+                    _animeDetailsBySearch.value = NetworkResponse.Error("Something went wrong")
                     Log.i("Error",response.message())
                 }
             }catch (e:HttpException){
