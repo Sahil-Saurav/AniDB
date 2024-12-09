@@ -17,10 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,6 +47,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,6 +71,9 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
     val authState = authViewModel.authstate.observeAsState()
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    var showPassword by remember {
+        mutableStateOf(false)
+    }
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> {
@@ -148,14 +156,41 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
                     value = pass,
                     onValueChange = {pass=it},
                     keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Password
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
                             keyboardController?.hide()
-                        }
+                        },
                     ),
+                    trailingIcon = {
+                        if (showPassword){
+                            Icon(
+                                painter = painterResource(R.drawable.hide_password_icon),
+                                null,
+                                tint = Color.DarkGray,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable {
+                                        showPassword=false
+                                    }
+                            )
+                        }else{
+                            Icon(
+                                painter = painterResource(R.drawable.show_password_icon),
+                                null,
+                                tint = Color.DarkGray,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable {
+                                        showPassword=true
+                                    }
+                            )
+                        }
+                    },
+                    visualTransformation = if (!showPassword) PasswordVisualTransformation() else VisualTransformation.None ,
                     modifier = Modifier
                         .clip(RoundedCornerShape(32.dp))
                 )
