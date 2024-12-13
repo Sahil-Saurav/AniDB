@@ -57,13 +57,13 @@ fun Search_Top(viewModel:ApiViewModel,navController: NavHostController){
     val searchViewModel = viewModel<SearchViewModel>()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-    val context = LocalContext.current
+    //val context = LocalContext.current
+    Topbar("Search", onBackClick = {navController.navigateUp()})
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(colorResource(R.color.pageBack))
     ) {
-        Topbar("Search", onBackClick = {navController.navigateUp()})
         Spacer(modifier = Modifier.height(64.dp))
         TextField(
             value = searchViewModel.search.value,
@@ -74,11 +74,7 @@ fun Search_Top(viewModel:ApiViewModel,navController: NavHostController){
             keyboardActions = KeyboardActions(
                 onSearch = {
                     Log.i("searchclick",searchViewModel.getSearch())
-                    if(Connectivity_Manager(context)){
-                        viewModel.getAnimeSearch(searchViewModel.getSearch(),searchViewModel.getType())
-                    }else{
-                        Connection_Failure_Toast(context)
-                    }
+                    viewModel.getAnimeSearch(searchViewModel.getSearch(),searchViewModel.getType())
                     keyboardController?.hide()
                     focusManager.clearFocus()
                 }
@@ -143,7 +139,7 @@ fun Search_Top(viewModel:ApiViewModel,navController: NavHostController){
                 errorSuffixColor = Color.Unspecified
             )
         )
-        Type_Select(searchViewModel)
+        Type_Select(viewModel,searchViewModel)
     }
 }
 

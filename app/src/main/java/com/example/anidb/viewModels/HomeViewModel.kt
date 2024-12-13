@@ -2,6 +2,7 @@ package com.example.anidb.viewModels
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.anidb.R
 import com.example.anidb.fragments.Label
 
 class HomeViewModel:ViewModel() {

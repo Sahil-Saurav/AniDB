@@ -2,6 +2,7 @@ package com.example.anidb.Utils
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,29 +26,31 @@ import androidx.compose.ui.unit.sp
 fun Topbar(
     title:String,
     onBackClick:()->Unit){
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Spacer(modifier = Modifier.width(36.dp))
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowLeft,
-            contentDescription = null,
-            tint = Color.White,
-            modifier =Modifier
-                .size(32.dp)
-                .clickable {
-                    onBackClick()
-                }
-        )
-        Spacer(modifier = Modifier.width(80.dp))
-        Text(
-            text = title,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White)
+    Box() {
+        Row(
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowLeft,
+                contentDescription = null,
+                tint = Color.White,
+                modifier =Modifier
+                    .size(32.dp)
+                    .clickable {
+                        onBackClick()
+                    }
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = title,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White)
+        }
     }
 }
 

@@ -28,11 +28,11 @@ fun TypeItem(label:String,checked:Boolean,onClick:()->Unit){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(start = 24.dp)
+            .padding(start = 24.dp, end = 24.dp)
     ) {
         Text(
             text = label,
-            fontSize = 24.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.White
         )

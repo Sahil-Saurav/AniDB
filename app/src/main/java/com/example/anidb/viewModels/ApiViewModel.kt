@@ -2,13 +2,12 @@ package com.example.anidb.viewModels
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
-import com.example.anidb.Utils.Connection_Failure_Toast
 import com.example.anidb.Utils.Connectivity_Manager
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.RetroFitInstance
@@ -18,10 +17,13 @@ import com.example.anidb.api.animeReview.AnimeReview
 import com.example.anidb.api.animeSearch.AnimeDetailsbySearch
 import com.example.anidb.api.recomendationAnime.Recommendations
 import com.example.anidb.api.topAnime.TopAnime
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okio.IOException
 
-class ApiViewModel():ViewModel() {
+class ApiViewModel(private val appContext:Context) :ViewModel() {
     private val api = RetroFitInstance.api
 
     private val _animeDetailsBySearch = MutableLiveData<NetworkResponse<AnimeDetailsbySearch>>()
@@ -43,8 +45,13 @@ class ApiViewModel():ViewModel() {
     val animeCharacter:LiveData<NetworkResponse<AnimeCharacter>> = _animeCharacter
 
     init {
-        getRecentAnimeRecommendations()
-        getTopAnime("bypopularity")
+        viewModelScope.launch {
+            while(!Connectivity_Manager(appContext)){
+                delay(5000)
+            }
+            getRecentAnimeRecommendations()
+            getTopAnime("bypopularity")
+        }
     }
 
     fun getAnimeSearch(name:String,type:String){
@@ -171,5 +178,15 @@ class ApiViewModel():ViewModel() {
                 _animeCharacter.value = NetworkResponse.Error(e.message.toString())
             }
         }
+    }
+}
+
+class ApiViewModelFactory(private val appContext: Context) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ApiViewModel::class.java)) {
+            return ApiViewModel(appContext) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

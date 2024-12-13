@@ -12,11 +12,10 @@ import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.SearchViewModel
 
 @Composable
-fun Type_Select(viewModel: SearchViewModel){
-    val apiViewModel = viewModel<ApiViewModel>()
+fun Type_Select(apiViewModel: ApiViewModel,viewModel: SearchViewModel){
     val list = listOf(
-        typeSelect(1,"tv"),
-        typeSelect(2,"movie")
+        typeSelect(1,"tv","Series"),
+        typeSelect(2,"movie","Movie")
     )
 
     Row(
@@ -25,7 +24,7 @@ fun Type_Select(viewModel: SearchViewModel){
     ) {
         list.forEach {
             TypeItem(
-                label=it.type,
+                label=it.label,
                 checked=viewModel.idx.value==it.idx,
                 onClick ={
                     viewModel.setIndex(it.idx)
@@ -41,5 +40,6 @@ fun Type_Select(viewModel: SearchViewModel){
 
 data class typeSelect (
     val idx:Int,
-    val type:String
+    val type:String,
+    val label:String
 )

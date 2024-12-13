@@ -25,7 +25,6 @@ fun Details_Bottom(viewModel:DetailsViewModel){
         var selectedIdx by remember {
             mutableStateOf(0)
         }
-
         val list = listOf(
             DetailsLabel(0,"About"),
             DetailsLabel(1,"Review"),

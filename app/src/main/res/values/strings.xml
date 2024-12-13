@@ -3,4 +3,6 @@
     <string name="About">about</string>
     <string name="Review">review</string>
     <string name="Character">character</string>
+    <string name="Main_Character">Main</string>
+    <string name="Side_Character">Supporting</string>
 </resources>
