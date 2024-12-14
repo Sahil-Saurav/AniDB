@@ -86,7 +86,7 @@ fun Details_Middle(data:Data?){
             val genre = data?.genres?.joinToString(",") {
                 it?.name?:"Unknown"
             }?:"null"
-            val genres = data?.genres?.map { it?.name }
+            //val genres = data?.genres?.map { it?.name }
             Text(
                 text = genre,
                 color = colorResource(R.color.text_gray),

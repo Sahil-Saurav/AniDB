@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.anidb.fragments.Youtube_Player
 import com.example.anidb.viewModels.ApiViewModel
 
 @Composable
@@ -60,6 +61,7 @@ fun testApi(viewModel:ApiViewModel){
                 imageVector = Icons.Default.Search,
                 contentDescription = null)
         }
+        Youtube_Player("QoqokgcX96M")
     }
 }
 

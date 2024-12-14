@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     color = colorResource(R.color.pageBack)
                 ) {
                     Navigation(viewModel,navController)
+                    //testApi(viewModel)
                 }
             }
         }

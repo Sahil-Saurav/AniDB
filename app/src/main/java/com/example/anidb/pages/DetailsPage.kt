@@ -36,8 +36,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +58,7 @@ import com.example.anidb.fragments.Details_Bottom
 import com.example.anidb.fragments.Details_Middle
 import com.example.anidb.fragments.Details_top
 import com.example.anidb.fragments.ReviewList
+import com.example.anidb.fragments.Youtube_Player
 import com.example.anidb.items.About
 import com.example.anidb.items.RecommendationItems
 import com.example.anidb.items.ReviewItems
@@ -120,6 +123,24 @@ fun DetailsPage(viewModel: ApiViewModel,navController: NavHostController){
                         "Review" ->{
                             viewModel.getAnimeReview(result.data.data?.mal_id)
                             ReviewList(viewModel)
+                        }
+                        "Trailer" ->{
+                            val videoId = result.data.data?.trailer?.youtube_id
+                            if(!videoId.isNullOrEmpty()){
+                                Youtube_Player(videoId)
+                            }else{
+                                Text(
+                                    text = "Trailer Not Available",
+                                    color = Color.White,
+                                    fontSize = 24.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    textDecoration = TextDecoration.Underline,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontStyle = FontStyle.Italic
+                                )
+                            }
                         }
                         "Characters" ->{
                             viewModel.getAnimeCharacters(result.data.data?.mal_id)
