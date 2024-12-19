@@ -48,9 +48,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Screens
+import com.example.anidb.viewModels.AccountViewModel
 import com.example.anidb.viewModels.AuthState
 import com.example.anidb.viewModels.AuthViewModel
 
@@ -62,6 +64,9 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
     var pass by remember {
         mutableStateOf("")
     }
+    var userName by remember {
+        mutableStateOf("")
+    }
     val context = LocalContext.current
     val authState = authViewModel.authstate.observeAsState()
     val focusManager = LocalFocusManager.current
@@ -69,10 +74,13 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
     var showPassword by remember {
         mutableStateOf(false)
     }
+    val accountViewModel = viewModel<AccountViewModel>()
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Authenticated ->{
+            is AuthState.SigndeUP ->{
                 navController.navigate(Screens.LoginScreen.route)
+                accountViewModel.setUserName(userName)
+                accountViewModel.insertUser(accountViewModel.getUserName(),email)
                 Toast.makeText(context,"Account created",Toast.LENGTH_LONG).show()
             }
             is AuthState.Error ->{Toast.makeText(context,(authState.value as AuthState.Error).message,Toast.LENGTH_LONG).show()}
@@ -86,12 +94,12 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
         Column(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
-                .padding(start = 32.dp, top = 64.dp),
+                .padding(start = 32.dp, top = 32.dp),
 
             ) {
             Text(
                 text = "Create an Account",
-                fontSize = 32.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
@@ -118,8 +126,30 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
                 )
             ) {
                 Text(
+                    text="User Name:",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = userName,
+                    onValueChange = {userName=it},
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(32.dp))
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
                     text="Email:",
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -141,7 +171,7 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text="Password:",
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -202,7 +232,7 @@ fun SignUpPage(authViewModel: AuthViewModel,navController: NavHostController){
                     enabled = authState.value != AuthState.Loading
                 ) {
                     Text(
-                        text="Sign UP",
+                        text="Sign Up",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

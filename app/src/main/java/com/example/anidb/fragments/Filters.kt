@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Utils.Loading
+import com.example.anidb.Utils.No_Internet
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.items.FilterItems
 import com.example.anidb.viewModels.ApiViewModel
@@ -59,7 +60,7 @@ fun Filters(viewModel: ApiViewModel,navController: NavHostController){
                     }
                 }
             null ->{
-                Text("No Items available")
+                No_Internet()
             }
         }
     }

@@ -53,11 +53,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Screens
+import com.example.anidb.viewModels.AccountViewModel
 import com.example.anidb.viewModels.AuthState
 import com.example.anidb.viewModels.AuthViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 @Composable
 fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
@@ -74,6 +79,7 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
     var showPassword by remember {
         mutableStateOf(false)
     }
+    val accountViewModel = viewModel<AccountViewModel>()
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> {
@@ -92,12 +98,12 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
         Column(
             verticalArrangement =Arrangement.Top,
             modifier = Modifier
-                .padding(start = 32.dp, top = 64.dp),
+                .padding(start = 32.dp, top = 32.dp),
 
         ) {
             Text(
                 text = "Login",
-                fontSize = 32.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
@@ -125,7 +131,7 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
             ) {
                 Text(
                     text="Email:",
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -147,7 +153,7 @@ fun LoginPage(authViewModel: AuthViewModel,navController: NavHostController){
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text="Password:",
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Utils.Loading
+import com.example.anidb.Utils.No_Internet
 import com.example.anidb.api.NetworkResponse
 import com.example.anidb.api.recomendationAnime.Entry
 import com.example.anidb.items.RecommendationItems
@@ -98,7 +99,7 @@ fun Recommendations(viewModel: ApiViewModel,navController: NavHostController){
                 }
             }
             null -> {
-                Text("No Recommendations Available")
+                No_Internet()
             }
         }
     }

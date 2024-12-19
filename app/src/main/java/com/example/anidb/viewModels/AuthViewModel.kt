@@ -48,7 +48,7 @@ class AuthViewModel:ViewModel() {
             .addOnCompleteListener {
                     task->
                 if (task.isSuccessful){
-                    _authstate.value = AuthState.Authenticated
+                    _authstate.value = AuthState.SigndeUP
                 }else{
                     _authstate.value = AuthState.Error(task.exception?.message?:"Something went wrong")
                 }
@@ -66,6 +66,7 @@ class AuthViewModel:ViewModel() {
 sealed class AuthState{
     object Authenticated:AuthState()
     object Unauthenticated:AuthState()
+    object SigndeUP:AuthState()
     object Loading:AuthState()
     data class Error(val message:String):AuthState()
 }

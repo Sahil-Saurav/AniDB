@@ -53,6 +53,7 @@ android {
 dependencies {
 
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     val retroFitVer = "2.11.0"
     val nav_version = "2.8.4"
     implementation ("com.squareup.retrofit2:retrofit:${retroFitVer}")

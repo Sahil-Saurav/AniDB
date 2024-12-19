@@ -7,25 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Utils.Bottom_App_Bar
 import com.example.anidb.fragments.SearchList
 import com.example.anidb.fragments.Search_Top
+import com.example.anidb.viewModels.AccountViewModel
 import com.example.anidb.viewModels.ApiViewModel
-import com.example.anidb.viewModels.SearchViewModel
 
 @Composable
-fun SearchPage(viewModel: ApiViewModel,navController: NavHostController){
+fun SearchPage(viewModel: ApiViewModel,accountViewModel: AccountViewModel,navController: NavHostController){
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),

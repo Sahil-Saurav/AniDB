@@ -28,11 +28,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.anidb.R
 import com.example.anidb.Screens
+import com.example.anidb.viewModels.AccountViewModel
 import com.example.anidb.viewModels.AuthState
 import com.example.anidb.viewModels.AuthViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 @Composable
 fun WelcomePage(authViewModel: AuthViewModel,navController: NavHostController){
@@ -40,7 +44,9 @@ fun WelcomePage(authViewModel: AuthViewModel,navController: NavHostController){
     val context = LocalContext.current
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Authenticated -> navController.navigate(Screens.HomeScreen.route)
+            is AuthState.Authenticated ->{
+                navController.navigate(Screens.HomeScreen.route)
+            }
             is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message,Toast.LENGTH_LONG).show()
             else -> Unit
         }

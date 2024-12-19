@@ -48,18 +48,21 @@ import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.anidb.pages.AccountPage
+import com.example.anidb.pages.CreateUserIDPage
 import com.example.anidb.pages.DetailsPage
 import com.example.anidb.pages.HomePage
 import com.example.anidb.pages.LoginPage
 import com.example.anidb.pages.SearchPage
 import com.example.anidb.pages.SignUpPage
 import com.example.anidb.pages.WelcomePage
+import com.example.anidb.viewModels.AccountViewModel
 import com.example.anidb.viewModels.ApiViewModel
 import com.example.anidb.viewModels.AuthViewModel
 
 @Composable
 fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
     val authViewModel = viewModel<AuthViewModel>()
+    val accountViewModel = viewModel<AccountViewModel>()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -72,13 +75,13 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
         ) {
             NavHost(navController = navController, startDestination = Screens.WelcomePage.route){
                 composable(route = Screens.HomeScreen.route) {
-                    HomePage(viewModel,navController)
+                    HomePage(viewModel,navController,accountViewModel)
                 }
                 composable(route = Screens.DetailsScreen.route) {
                     DetailsPage(viewModel,navController)
                 }
                 composable(route = Screens.SearchScreen.route) {
-                    SearchPage(viewModel,navController)
+                    SearchPage(viewModel,accountViewModel,navController)
                 }
                 composable(route = Screens.AccountScreen.route) {
                     AccountPage(authViewModel,navController)
@@ -93,7 +96,6 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
                     WelcomePage(authViewModel,navController)
                 }
             }
-
         }
     }
 }
