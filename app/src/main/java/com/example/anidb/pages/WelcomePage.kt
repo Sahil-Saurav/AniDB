@@ -77,7 +77,7 @@ fun WelcomePage(authViewModel: AuthViewModel,navController: NavHostController){
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Welcome to AniDex, top platform to know about your favourite anime",
+                    text = "Welcome to AniDB, top platform to know about your favourite anime",
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,

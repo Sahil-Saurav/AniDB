@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AniDex</string>
+    <string name="app_name">AniDB</string>
     <string name="About">about</string>
     <string name="Review">review</string>
     <string name="Character">character</string>
