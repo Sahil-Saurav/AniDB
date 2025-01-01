@@ -1,5 +1,7 @@
 package com.example.anidb
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -74,25 +76,49 @@ fun Navigation(viewModel: ApiViewModel,navController: NavHostController){
                 .padding(innerPadding)
         ) {
             NavHost(navController = navController, startDestination = Screens.WelcomePage.route){
-                composable(route = Screens.HomeScreen.route) {
+                composable(
+                    route = Screens.HomeScreen.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it}) },
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it}) }
+                    ) {
                     HomePage(viewModel,navController,accountViewModel)
                 }
                 composable(route = Screens.DetailsScreen.route) {
                     DetailsPage(viewModel,navController)
                 }
-                composable(route = Screens.SearchScreen.route) {
+                composable(
+                    route = Screens.SearchScreen.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it})},
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it})}
+                ) {
                     SearchPage(viewModel,accountViewModel,navController)
                 }
-                composable(route = Screens.AccountScreen.route) {
+                composable(
+                    route = Screens.AccountScreen.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it})},
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it})}
+                ) {
                     AccountPage(authViewModel,navController)
                 }
-                composable(route = Screens.LoginScreen.route) {
+                composable(
+                    route = Screens.LoginScreen.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it})},
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it})}
+                ) {
                     LoginPage(authViewModel,navController)
                 }
-                composable(route = Screens.SignUpScreen.route) {
+                composable(
+                    route = Screens.SignUpScreen.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it})},
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it})}
+                ) {
                     SignUpPage(authViewModel,navController)
                 }
-                composable(route = Screens.WelcomePage.route) {
+                composable(
+                    route = Screens.WelcomePage.route,
+                    enterTransition = { slideInHorizontally(initialOffsetX = {-it})},
+                    exitTransition = { slideOutHorizontally(targetOffsetX = {-it})}
+                ) {
                     WelcomePage(authViewModel,navController)
                 }
             }
